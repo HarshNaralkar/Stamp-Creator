@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User-Friendly Stamp Designer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="preview-section">
+      <div class="canvas-container">
+        <canvas id="stampCanvas" width="450" height="450"></canvas>
+      </div>
+    </div>
+    <div class="form-section">
+      <h2>Customize Your Stamp</h2>
+      <div class="design-section">
+        <h3>Text</h3>
+        <div class="form-group">
+          <label for="outerText">Top Circular Text</label>
+          <input type="text" id="outerText" maxlength="60" placeholder="Enter top text (e.g. COMPANY NAME)">
+        </div>
+        <div class="form-group">
+          <label for="centerText">Center Text</label>
+          <input type="text" id="centerText" maxlength="25" placeholder="Enter center text (e.g. HQ)">
+        </div>
+        <div class="form-group">
+          <label for="bottomText">Bottom Circular Text</label>
+          <input type="text" id="bottomText" maxlength="40" placeholder="Enter bottom text (optional)">
+        </div>
+      </div>
+      <div class="controls" style="position: sticky;">
+        <button class="btn btn-primary" onclick="downloadStamp('jpg')">Download JPG</button>
+        <button class="btn btn-secondary" onclick="downloadStamp('png')">Download PNG</button>
+      </div>
+      <div class="design-section">
+        <h3>Outer Text Controls</h3>
+        <div class="form-group slider-group">
+          <label for="outerTextFontSize" style="min-width:120px;">Font Size</label>
+          <input type="range" id="outerTextFontSize" min="10" max="50" value="32">
+          <span id="outerTextFontSizeValue">32</span>
+        </div>
+        <div class="form-group slider-group">
+          <label for="outerTextRadius" style="min-width:120px;">Radius</label>
+          <input type="range" id="outerTextRadius" min="60" max="210" value="175">
+          <span id="outerTextRadiusValue">175</span>
+        </div>
+        <div class="form-group slider-group">
+          <label for="outerTextStartAngle" style="min-width:120px;">Start Angle (°)</label>
+          <input type="range" id="outerTextStartAngle" min="-180" max="180" value="107">
+          <span id="outerTextStartAngleValue">106</span>
+        </div>
+        
+      </div>
+      <div class="design-section">
+        <h3>Decorative Element</h3>
+        <div class="decoration-grid">
+          <label class="decoration-option">
+            <input type="radio" name="decoration" value="star" checked>
+            ⭐ Star
+          </label>
+          <label class="decoration-option">
+            <input type="radio" name="decoration" value="dot">
+            ● Dot
+          </label>
+          <label class="decoration-option">
+            <input type="radio" name="decoration" value="diamond">
+            ◆ Diamond
+          </label>
+          <label class="decoration-option">
+            <input type="radio" name="decoration" value="triangle">
+            ▲ Triangle
+          </label>
+          <label class="decoration-option">
+            <input type="radio" name="decoration" value="square">
+            ■ Square
+          </label>
+          <label class="decoration-option active">
+            <input type="radio" name="decoration" value="none">
+            ✕ None
+          </label>
+        </div>
+      </div>
+      <div class="design-section">
+        <h3>Element Controls</h3>
+        <div class="form-group slider-group">
+          <label for="elementRadius" style="min-width:120px;">Distance from Center</label>
+          <input type="range" id="elementRadius" min="50" max="200" value="181">
+          <span id="elementRadiusValue">176</span>
+        </div>
+        <div class="form-group slider-group">
+          <label for="elementAngle" style="min-width:120px;">Angle (°)</label>
+          <input type="range" id="elementAngle" min="0" max="359" value="89">
+          <span id="elementAngleValue">89</span>
+        </div>
+        <div class="form-group slider-group">
+          <label for="elementSize" style="min-width:120px;">Element Size</label>
+          <input type="range" id="elementSize" min="8" max="50" value="24">
+          <span id="elementSizeValue">15</span>
+        </div>
+      </div>
+      <div class="design-section ring-controls">
+        <h3>Ring Controls</h3>
+        <div class="form-group slider-group">
+          <label for="ringCount" style="min-width:120px;">Number of Rings</label>
+          <input type="range" id="ringCount" min="1" max="3" value="3">
+          <span id="ringCountValue">3</span>
+        </div>
+        
+        
+        
+      </div>
+
+      <div class="design-section ring-controls">
+        <h3>Ring Controls 1</h3>
+        <div id="ring1-controls">
+          <div class="slider-group">
+            <label for="ring1Radius">Ring 1 Radius</label>
+            <input type="range" id="ring1Radius" min="80" max="210" value="210">
+            <span id="ring1RadiusValue">210</span>
+          </div>
+          <div class="slider-group">
+            <label for="ring1Width">Ring 1 Thickness</label>
+            <input type="range" id="ring1Width" min="1" max="20" value="8">
+            <span id="ring1WidthValue">8</span>
+          </div>
+        </div>
+      </div>
+      <div class="design-section ring-controls">
+        <h3>Ring Controls 2</h3>
+        <div id="ring2-controls">
+          <div class="slider-group">
+            <label for="ring2Radius">Ring 2 Radius</label>
+            <input type="range" id="ring2Radius" min="60" max="200" value="151">
+            <span id="ring2RadiusValue">151</span>
+          </div>
+          <div class="slider-group">
+            <label for="ring2Width">Ring 2 Thickness</label>
+            <input type="range" id="ring2Width" min="1" max="12" value="7">
+            <span id="ring2WidthValue">7</span>
+          </div>
+        </div>
+        
+      </div>
+      <div class="design-section ring-controls">
+        <h3>Ring Controls 3</h3>
+        <div id="ring3-controls" style="display:none;">
+          <div class="slider-group">
+            <label for="ring3Radius">Ring 3 Radius</label>
+            <input type="range" id="ring3Radius" min="40" max="180" value="140">
+            <span id="ring3RadiusValue">140</span>
+          </div>
+          <div class="slider-group">
+            <label for="ring3Width">Ring 3 Thickness</label>
+            <input type="range" id="ring3Width" min="1" max="8" value="5">
+            <span id="ring3WidthValue">5</span>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="design-section">
+        <h3>Stamp Color</h3>
+        <div class="color-picker">
+          <div class="color-option active" data-color="#1a237e" style="background: #1a237e"></div>
+          <div class="color-option" data-color="#be3144" style="background: #be3144"></div>
+          <div class="color-option" data-color="#4b306a" style="background: #4b306a"></div>
+          <div class="color-option" data-color="#1a3bc7" style="background: #1a3bc7"></div>
+          <div class="color-option" data-color="#dc2626" style="background: #dc2626"></div>
+          <div class="color-option" data-color="#000000" style="background: #000000"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>
