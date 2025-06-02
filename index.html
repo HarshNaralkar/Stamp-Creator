@@ -12,8 +12,22 @@
       <div class="canvas-container">
         <canvas id="stampCanvas" width="450" height="450"></canvas>
       </div>
+      <div class="controls sticky-downloads">
+        <button class="btn btn-primary" onclick="downloadStamp('jpg')">Download JPG</button>
+        <button class="btn btn-secondary" onclick="downloadStamp('png')">Download PNG</button>
+      </div>
     </div>
+    
     <div class="form-section">
+       <div class="design-section">
+        <h3>Templates</h3>
+        <select id="templateSelect">
+          <option value="">Select Template</option>
+          <option value="classic">Classic</option>
+          <option value="mumbai">Mumbai</option>
+          <option value="modern">Modern</option>
+        </select>
+      </div>
       <h2>Customize Your Stamp</h2>
       <div class="design-section">
         <h3>Text</h3>
@@ -25,15 +39,12 @@
           <label for="centerText">Center Text</label>
           <input type="text" id="centerText" maxlength="25" placeholder="Enter center text (e.g. HQ)">
         </div>
-        <div class="form-group">
+        <div class="form-group" style="display: none;">
           <label for="bottomText">Bottom Circular Text</label>
           <input type="text" id="bottomText" maxlength="40" placeholder="Enter bottom text (optional)">
         </div>
       </div>
-      <div class="controls" style="position: sticky;">
-        <button class="btn btn-primary" onclick="downloadStamp('jpg')">Download JPG</button>
-        <button class="btn btn-secondary" onclick="downloadStamp('png')">Download PNG</button>
-      </div>
+     
       <div class="design-section">
         <h3>Outer Text Controls</h3>
         <div class="form-group slider-group">
@@ -49,37 +60,45 @@
         <div class="form-group slider-group">
           <label for="outerTextStartAngle" style="min-width:120px;">Start Angle (°)</label>
           <input type="range" id="outerTextStartAngle" min="-180" max="180" value="107">
-          <span id="outerTextStartAngleValue">106</span>
+          <span id="outerTextStartAngleValue">107</span>
         </div>
-        
+        <div class="form-group slider-group">
+          <label for="outerTextCharSpacing" style="min-width:120px;">Char Spacing</label>
+          <input type="range" id="outerTextCharSpacing" min="-20" max="40" value="0">
+          <span id="outerTextCharSpacingValue">0</span>
+        </div>
+      </div>
+      <div class="design-section">
+        <h3>Stamp Effects</h3>
+        <div class="form-group slider-group">
+          <label for="realism" style="min-width:120px;">Stamp Realism</label>
+          <input type="range" id="realism" min="0" max="100" value="0">
+          <span id="realismValue">0</span>
+        </div>
+        <div class="form-group slider-group">
+          <label for="brightness" style="min-width:120px;">Brightness</label>
+          <input type="range" id="brightness" min="60" max="140" value="100">
+          <span id="brightnessValue">100</span>
+        </div>
       </div>
       <div class="design-section">
         <h3>Decorative Element</h3>
         <div class="decoration-grid">
-          <label class="decoration-option">
-            <input type="radio" name="decoration" value="star" checked>
-            ⭐ Star
-          </label>
-          <label class="decoration-option">
-            <input type="radio" name="decoration" value="dot">
-            ● Dot
-          </label>
-          <label class="decoration-option">
-            <input type="radio" name="decoration" value="diamond">
-            ◆ Diamond
-          </label>
-          <label class="decoration-option">
-            <input type="radio" name="decoration" value="triangle">
-            ▲ Triangle
-          </label>
-          <label class="decoration-option">
-            <input type="radio" name="decoration" value="square">
-            ■ Square
-          </label>
-          <label class="decoration-option active">
-            <input type="radio" name="decoration" value="none">
-            ✕ None
-          </label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="star" checked>⭐ Star</label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="dot">● Dot</label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="diamond">◆ Diamond</label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="triangle">▲ Triangle</label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="square">■ Square</label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="✱">✱</label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="✲">✲</label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="✵">✵</label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="❈">❈</label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="❉">❉</label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="❖">❖</label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="✢">✢</label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="✥">✥</label>
+              <label class="decoration-option"><input type="radio" name="decoration" value="✰">✰</label>
+              <label class="decoration-option active"><input type="radio" name="decoration" value="none">✕ None</label>
         </div>
       </div>
       <div class="design-section">
@@ -87,7 +106,7 @@
         <div class="form-group slider-group">
           <label for="elementRadius" style="min-width:120px;">Distance from Center</label>
           <input type="range" id="elementRadius" min="50" max="200" value="181">
-          <span id="elementRadiusValue">176</span>
+          <span id="elementRadiusValue">181</span>
         </div>
         <div class="form-group slider-group">
           <label for="elementAngle" style="min-width:120px;">Angle (°)</label>
@@ -97,7 +116,7 @@
         <div class="form-group slider-group">
           <label for="elementSize" style="min-width:120px;">Element Size</label>
           <input type="range" id="elementSize" min="8" max="50" value="24">
-          <span id="elementSizeValue">15</span>
+          <span id="elementSizeValue">24</span>
         </div>
       </div>
       <div class="design-section ring-controls">
@@ -107,13 +126,6 @@
           <input type="range" id="ringCount" min="1" max="3" value="3">
           <span id="ringCountValue">3</span>
         </div>
-        
-        
-        
-      </div>
-
-      <div class="design-section ring-controls">
-        <h3>Ring Controls 1</h3>
         <div id="ring1-controls">
           <div class="slider-group">
             <label for="ring1Radius">Ring 1 Radius</label>
@@ -126,9 +138,6 @@
             <span id="ring1WidthValue">8</span>
           </div>
         </div>
-      </div>
-      <div class="design-section ring-controls">
-        <h3>Ring Controls 2</h3>
         <div id="ring2-controls">
           <div class="slider-group">
             <label for="ring2Radius">Ring 2 Radius</label>
@@ -141,11 +150,7 @@
             <span id="ring2WidthValue">7</span>
           </div>
         </div>
-        
-      </div>
-      <div class="design-section ring-controls">
-        <h3>Ring Controls 3</h3>
-        <div id="ring3-controls" style="display:none;">
+        <div id="ring3-controls">
           <div class="slider-group">
             <label for="ring3Radius">Ring 3 Radius</label>
             <input type="range" id="ring3Radius" min="40" max="180" value="140">
@@ -158,8 +163,6 @@
           </div>
         </div>
       </div>
-
-
       <div class="design-section">
         <h3>Stamp Color</h3>
         <div class="color-picker">
@@ -174,5 +177,76 @@
     </div>
   </div>
   <script src="main.js"></script>
+  <!-- Your template loader JS goes here if not in main.js -->
+  <script>
+    const templateSelect = document.getElementById('templateSelect');
+
+    templateSelect.addEventListener('change', async function() {
+      const name = templateSelect.value;
+      if (!name) return;
+      try {
+        const res = await fetch(`/templates/${name}.json`);
+        if (!res.ok) throw new Error('Template not found');
+        const t = await res.json();
+        // Apply values to controllers
+        outerInput.value = t.outerText || "";
+        centerInput.value = t.centerText || "";
+        bottomInput.value = t.bottomText || "";
+        outerTextFontSizeSlider.value = t.outerTextFontSize || 32;
+        outerTextFontSizeValue.textContent = outerTextFontSizeSlider.value;
+        outerTextRadiusSlider.value = t.outerTextRadius || 175;
+        outerTextRadiusValue.textContent = outerTextRadiusSlider.value;
+        outerTextStartAngleSlider.value = t.outerTextStartAngle || 39;
+        outerTextStartAngleValue.textContent = outerTextStartAngleSlider.value;
+        if (typeof outerTextCharSpacingSlider !== "undefined") {
+          outerTextCharSpacingSlider.value = t.outerTextCharSpacing || 0;
+          outerTextCharSpacingValue.textContent = outerTextCharSpacingSlider.value;
+        }
+        elementRadiusSlider.value = t.elementRadius || 176;
+        elementRadiusValue.textContent = elementRadiusSlider.value;
+        elementAngleSlider.value = t.elementAngle || 89;
+        elementAngleValue.textContent = elementAngleSlider.value;
+        elementSizeSlider.value = t.elementSize || 15;
+        elementSizeValue.textContent = elementSizeSlider.value;
+        ringCountSlider.value = t.ringCount || 2;
+        ringCountValue.textContent = ringCountSlider.value;
+        ring1RadiusSlider.value = t.ring1Radius || 210;
+        ring1RadiusValue.textContent = ring1RadiusSlider.value;
+        ring1WidthSlider.value = t.ring1Width || 8;
+        ring1WidthValue.textContent = ring1WidthSlider.value;
+        ring2RadiusSlider.value = t.ring2Radius || 151;
+        ring2RadiusValue.textContent = ring2RadiusSlider.value;
+        ring2WidthSlider.value = t.ring2Width || 4;
+        ring2WidthValue.textContent = ring2WidthSlider.value;
+        ring3RadiusSlider.value = t.ring3Radius || 140;
+        ring3RadiusValue.textContent = ring3RadiusSlider.value;
+        ring3WidthSlider.value = t.ring3Width || 5;
+        ring3WidthValue.textContent = ring3WidthSlider.value;
+        if (typeof realismSlider !== "undefined") {
+          realismSlider.value = t.realism || 0;
+          realismValue.textContent = realismSlider.value;
+        }
+        if (typeof brightnessSlider !== "undefined") {
+          brightnessSlider.value = t.brightness || 100;
+          brightnessValue.textContent = brightnessSlider.value;
+        }
+        // Color
+        document.querySelectorAll('.color-option').forEach(o => {
+          o.classList.toggle('active', o.dataset.color === t.color);
+        });
+        // Decoration
+        document.querySelectorAll('.decoration-option input').forEach(i => {
+          i.checked = (i.value === t.decoration);
+          if (i.checked) i.parentElement.classList.add('active');
+          else i.parentElement.classList.remove('active');
+        });
+        updateRingControls();
+        updateStamp();
+      } catch (e) {
+        alert('Could not load template: ' + e.message);
+      }
+    });
+
+  </script>
 </body>
 </html>

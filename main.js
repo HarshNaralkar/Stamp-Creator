@@ -61,7 +61,7 @@ function drawCircularText(text, centerX, centerY, radius, fontSize, color, isBot
 }
 
 function drawDecorations(centerX, centerY, radius, angleDeg, size, decoration, color) {
-  if (decoration === 'none') return;
+  if (!decoration || decoration === 'none') return;
   ctx.save();
   ctx.fillStyle = color;
   ctx.strokeStyle = color;
@@ -71,6 +71,7 @@ function drawDecorations(centerX, centerY, radius, angleDeg, size, decoration, c
 
   ctx.save();
   ctx.translate(x, y);
+
   switch (decoration) {
     case 'star':
       drawStar(0, 0, 5, size, size/2);
@@ -93,6 +94,13 @@ function drawDecorations(centerX, centerY, radius, angleDeg, size, decoration, c
       break;
     case 'square':
       ctx.fillRect(-size/2, -size/2, size, size);
+      break;
+    default:
+      // Draw as Unicode symbol
+      ctx.font = `${size}px Arial, "Segoe UI Symbol", "Noto Sans Symbols", "Arial Unicode MS", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(decoration, 0, 0);
       break;
   }
   ctx.restore();
@@ -157,6 +165,7 @@ function updateStamp() {
   ctx.fillStyle = "#fff";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.restore();
+  const charSpacing = Number(outerTextCharSpacingSlider.value);
 
   const outerText = outerInput.value.toUpperCase();
   const centerText = centerInput.value;
@@ -186,9 +195,9 @@ function updateStamp() {
   drawRings(225, 225, ringSettings, color);
 
   // Use user-selected radius for outer text, always start at set angle
-  drawCircularText(outerText, 225, 225, outerTextRadius, outerFontSize, color, false, outerStartAngle);
+  drawCircularText(outerText, 225, 225, outerTextRadius, outerFontSize, color, false, outerStartAngle,charSpacing);
   if (bottomText.trim()) {
-    drawCircularText(bottomText, 225, 225, outerTextRadius, outerFontSize, color, true, outerStartAngle);
+    drawCircularText(bottomText, 225, 225, outerTextRadius, outerFontSize, color, true, outerStartAngle,charSpacing);
   }
   drawDecorations(225, 225, decoRadius, decoAngle, decoSize, decoration, color);
   ctx.save();
@@ -264,6 +273,122 @@ function downloadStamp(type) {
   }
   link.click();
 }
+
+// --- Realism and Brightness Controllers ---
+const realismSlider = document.getElementById('realism');
+const realismValue = document.getElementById('realismValue');
+realismSlider.addEventListener('input', () => {
+  realismValue.textContent = realismSlider.value;
+  updateStamp();
+});
+realismValue.textContent = realismSlider.value;
+
+const brightnessSlider = document.getElementById('brightness');
+const brightnessValue = document.getElementById('brightnessValue');
+brightnessSlider.addEventListener('input', () => {
+  brightnessValue.textContent = brightnessSlider.value;
+  updateStamp();
+});
+brightnessValue.textContent = brightnessSlider.value;
+
+// --- Character Spacing Controller ---
+const outerTextCharSpacingSlider = document.getElementById('outerTextCharSpacing');
+const outerTextCharSpacingValue = document.getElementById('outerTextCharSpacingValue');
+
+// Allow negative values for tighter spacing
+outerTextCharSpacingSlider.min = -20; // or another negative value you prefer
+outerTextCharSpacingSlider.max = 40;  // keep or adjust as needed
+
+// Update the display and redraw the stamp on slider input
+outerTextCharSpacingSlider.addEventListener('input', () => {
+  outerTextCharSpacingValue.textContent = outerTextCharSpacingSlider.value;
+  updateStamp();
+});
+
+// Set the initial value display
+outerTextCharSpacingValue.textContent = outerTextCharSpacingSlider.value;
+
+// --- Patch drawCircularText for true letter spacing (kerning) ---
+const origDrawCircularText = drawCircularText;
+window.drawCircularText = function(
+  text,
+  centerX,
+  centerY,
+  radius,
+  fontSize,
+  color,
+  isBottom = false,
+  startAngleDeg = -144,
+  charSpacing = Number(outerTextCharSpacingSlider.value)
+) {
+  if (!text.trim()) return;
+  ctx.save();
+  ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+  ctx.fillStyle = color;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  // 1. Measure widths of all characters
+  let charWidths = [];
+  let totalArcLen = 0;
+  for (let i = 0; i < text.length; i++) {
+    let w = ctx.measureText(text[i]).width;
+    charWidths.push(w);
+    totalArcLen += w;
+    if (i < text.length - 1) totalArcLen += charSpacing; // spacing between every character
+  }
+
+  // 2. Calculate total angle covered by the text
+  let totalAngle = totalArcLen / radius;
+  let startAngle = startAngleDeg * Math.PI / 180;
+  // Center the text on the arc
+  let currentAngle = startAngle - (isBottom ? -1 : 1) * totalAngle / 2;
+
+  // 3. Draw each character with spacing
+  for (let i = 0; i < text.length; i++) {
+    let w = charWidths[i];
+    let charAngle = (w / 2) / radius;
+    let angle = currentAngle + (isBottom ? -1 : 1) * charAngle;
+
+    // Position for this character
+    let x = centerX + radius * Math.cos(angle);
+    let y = centerY + radius * Math.sin(angle);
+
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle + (isBottom ? -Math.PI / 2 : Math.PI / 2));
+    ctx.fillText(text[i], 0, 0);
+    ctx.restore();
+
+    // Advance the angle for the next character
+    currentAngle += (isBottom ? -1 : 1) * ((w + charSpacing) / radius);
+  }
+
+  ctx.restore();
+};
+
+
+// --- Patch updateStamp for realism and brightness ---
+const origUpdateStamp = updateStamp;
+window.updateStamp = function() {
+  // Always fill white background first
+  ctx.save();
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.restore();
+
+  // Realism and brightness
+  const realism = Number(realismSlider.value);
+  const brightness = Number(brightnessSlider.value) / 100;
+  ctx.globalAlpha = 1;
+  ctx.filter = `blur(${realism/40}px) brightness(${brightness})`;
+
+  origUpdateStamp();
+  ctx.globalAlpha = 1;
+  ctx.filter = 'none';
+};
+
 
 // Set initial slider values
 outerTextFontSizeValue.textContent = outerTextFontSizeSlider.value;

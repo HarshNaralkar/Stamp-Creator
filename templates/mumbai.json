@@ -1,0 +1,23 @@
+{
+  "outerText": "HN Code Stamp Creator website",
+  "centerText": "HNcode",
+  "bottomText": "",
+  "outerTextFontSize": 26,
+  "outerTextRadius": 134,
+  "outerTextStartAngle": -90,
+  "outerTextCharSpacing": 10,
+  "elementRadius": 138,
+  "elementAngle": 90,
+  "elementSize": 27,
+  "ringCount": 3,
+  "ring1Radius": 172,
+  "ring1Width": 3,
+  "ring2Radius": 164,
+  "ring2Width": 5,
+  "ring3Radius": 111,
+  "ring3Width": 3,
+  "color": "#1a237e",
+  "decoration": "✱",
+  "realism": 1,
+  "brightness": 100
+}

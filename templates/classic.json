@@ -1,0 +1,23 @@
+{
+  "outerText": "COMPANY NAME",
+  "centerText": "HQ",
+  "bottomText": "APPROVED",
+  "outerTextFontSize": 32,
+  "outerTextRadius": 175,
+  "outerTextStartAngle": 39,
+  "outerTextCharSpacing": 5,
+  "elementRadius": 176,
+  "elementAngle": 89,
+  "elementSize": 15,
+  "ringCount": 2,
+  "ring1Radius": 210,
+  "ring1Width": 8,
+  "ring2Radius": 151,
+  "ring2Width": 4,
+  "ring3Radius": 140,
+  "ring3Width": 5,
+  "color": "#1a237e",
+  "decoration": "star",
+  "realism": 0,
+  "brightness": 100
+}
