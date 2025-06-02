@@ -185,7 +185,7 @@
       const name = templateSelect.value;
       if (!name) return;
       try {
-        const res = await fetch(`/templates/${name}.json`);
+        const res = await fetch(`templates/${name}.json`);
         if (!res.ok) throw new Error('Template not found');
         const t = await res.json();
         // Apply values to controllers
